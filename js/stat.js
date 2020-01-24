@@ -12,9 +12,15 @@ var FONT_GAP = 20;
 var BAR_WIDTH = 40;
 var BAR_HEIGHT = 150;
 
-var renderCloud = function (ctx, x, y, color) {
-  ctx.fillStyle = color;
-  ctx.fillRect(x, y, CLOUD_WIDTH, CLOUD_HEIGHT);
+var renderRect = function (ctx, x, y, width, height, color) {
+  ctx.fillStyle = color || '#000000';
+  ctx.fillRect(x, y, width, height);
+};
+
+var renderText = function (ctx, text, x, y, font, color) {
+  ctx.fillStyle = color || '#000000';
+  ctx.font = font || '16px PT Mono';
+  ctx.fillText(text, x, y);
 };
 
 var getRandomBlue = function () {
@@ -34,25 +40,22 @@ var getMaxElement = function (arr) {
 };
 
 window.renderStatistics = function (ctx, names, times) {
-  renderCloud(ctx, CLOUD_X + CLOUD_GAP, CLOUD_Y + CLOUD_GAP, 'rgba(0, 0, 0, 0.7)');
-  renderCloud(ctx, CLOUD_X, CLOUD_Y, '#ffffff');
+  renderRect(ctx, CLOUD_X + CLOUD_GAP, CLOUD_Y + CLOUD_GAP, CLOUD_WIDTH, CLOUD_HEIGHT, 'rgba(0, 0, 0, 0.7)');
+  renderRect(ctx, CLOUD_X, CLOUD_Y, CLOUD_WIDTH, CLOUD_HEIGHT, '#ffffff');
 
-  ctx.fillStyle = '#000000';
-  ctx.font = '16px PT Mono';
-  ctx.fillText('Ура вы победили!', CLOUD_X + TEXT_GAP, CLOUD_Y + TEXT_GAP);
-  ctx.fillText('Список результатов:', CLOUD_X + TEXT_GAP, CLOUD_Y + TEXT_GAP + FONT_GAP);
+  renderText(ctx, 'Ура вы победили!', CLOUD_X + TEXT_GAP, CLOUD_Y + TEXT_GAP, '16px PT Mono', '#000000');
+  renderText(ctx, 'Список результатов:', CLOUD_X + TEXT_GAP, CLOUD_Y + TEXT_GAP + FONT_GAP, '16px PT Mono', '#000000');
 
   var maxTime = getMaxElement(times);
 
   for (var i = 0; i < names.length; i++) {
     var offsetX = CLOUD_X + GAP + (BAR_WIDTH + GAP) * i;
     var barHeight = BAR_HEIGHT * Math.round(times[i]) / maxTime;
+    var barColor = names[i] === 'Вы' ? 'rgba(255, 0, 0, 1)' : getRandomBlue();
 
-    ctx.fillStyle = '#000000';
-    ctx.fillText(names[i], offsetX, CLOUD_HEIGHT - GAP_Y);
-    ctx.fillText(Math.round(times[i]), offsetX, CLOUD_HEIGHT - TEXT_GAP - GAP_Y - barHeight);
+    renderText(ctx, names[i], offsetX, CLOUD_HEIGHT - GAP_Y, '16px PT Mono', '#000000');
+    renderText(ctx, Math.round(times[i]), offsetX, CLOUD_HEIGHT - TEXT_GAP - GAP_Y - barHeight, '16px PT Mono', '#000000');
 
-    ctx.fillStyle = names[i] === 'Вы' ? 'rgba(255, 0, 0, 1)' : getRandomBlue();
-    ctx.fillRect(offsetX, CLOUD_HEIGHT - barHeight - GAP_Y - FONT_GAP, BAR_WIDTH, barHeight);
+    renderRect(ctx, offsetX, CLOUD_HEIGHT - barHeight - GAP_Y - FONT_GAP, BAR_WIDTH, barHeight, barColor);
   }
 };
