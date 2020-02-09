@@ -62,25 +62,28 @@ var renderAllWizards = function (wizardsQuantity) {
   similarListElement.appendChild(fragment);
 };
 
-var onCoatChangeColor = function () {
-  var randomCoatColor = getRandomElement(COAT_COLORS);
+var changeColorElement = function (color, wizardElement, input) {
+  var randomColor = getRandomElement(color);
 
-  wizardCoat.style.fill = randomCoatColor;
-  coatColorInput.value = randomCoatColor;
+  if (wizardElement === wizardFireball) {
+    wizardElement.style.backgroundColor = randomColor;
+  } else {
+    wizardElement.style.fill = randomColor;
+  }
+
+  input.value = randomColor;
+};
+
+var onCoatChangeColor = function () {
+  changeColorElement(COAT_COLORS, wizardCoat, coatColorInput);
 };
 
 var onEyesChangeColor = function () {
-  var randomEyesColor = getRandomElement(EYES_COLORS);
-
-  wizardEyes.style.fill = randomEyesColor;
-  eyesColorInput.value = randomEyesColor;
+  changeColorElement(EYES_COLORS, wizardEyes, eyesColorInput);
 };
 
 var onFireballChangeColor = function () {
-  var randomFireballColor = getRandomElement(FIREBALL_COLORS);
-
-  wizardFireball.style.backgroundColor = randomFireballColor;
-  wizardFireballInput.value = randomFireballColor;
+  changeColorElement(FIREBALL_COLORS, wizardFireball, wizardFireballInput);
 };
 
 var onPopupEscPress = function (evt) {
