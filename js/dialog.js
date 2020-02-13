@@ -8,13 +8,14 @@
   var setup = document.querySelector('.setup');
   var setupOpen = document.querySelector('.setup-open');
   var setupClose = setup.querySelector('.setup-close');
-  var dialogHandler = setup.querySelector('.upload');
-  var userNameInput = setup.querySelector('.setup-user-name');
-  var wizardCoat = setup.querySelector('.setup-wizard .wizard-coat');
-  var wizardEyes = setup.querySelector('.setup-wizard .wizard-eyes');
-  var coatColorInput = setup.querySelector('input[name=coat-color]');
-  var eyesColorInput = setup.querySelector('input[name=eyes-color]');
-  var wizardFireball = setup.querySelector('.setup-fireball-wrap');
+  var form = setup.querySelector('.setup-wizard-form');
+  var dialogHandler = form.querySelector('.upload');
+  var userNameInput = form.querySelector('.setup-user-name');
+  var wizardCoat = form.querySelector('.setup-wizard .wizard-coat');
+  var wizardEyes = form.querySelector('.setup-wizard .wizard-eyes');
+  var coatColorInput = form.querySelector('input[name=coat-color]');
+  var eyesColorInput = form.querySelector('input[name=eyes-color]');
+  var wizardFireball = form.querySelector('.setup-fireball-wrap');
   var wizardFireballInput = wizardFireball.querySelector('input');
 
   var changeColorElement = function (color, wizardElement, input) {
@@ -60,6 +61,7 @@
     wizardCoat.addEventListener('click', onCoatChangeColor);
     wizardEyes.addEventListener('click', onEyesChangeColor);
     wizardFireball.addEventListener('click', onFireballChangeColor);
+    form.addEventListener('submit', onFormSubmit);
   };
 
   var closePopup = function () {
@@ -72,6 +74,14 @@
     wizardCoat.removeEventListener('click', onCoatChangeColor);
     wizardEyes.removeEventListener('click', onEyesChangeColor);
     wizardFireball.removeEventListener('click', onFireballChangeColor);
+    form.removeEventListener('submit', onFormSubmit);
+  };
+
+  var onFormSubmit = function (evt) {
+    evt.preventDefault();
+
+    window.backend.save(new FormData(form), closePopup, window.setup.onError);
+    form.reset();
   };
 
   setupOpen.addEventListener('click', function () {

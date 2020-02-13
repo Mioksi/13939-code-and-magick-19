@@ -8,39 +8,44 @@
 
   var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 
-  var createWizardsArray = function (wizardsQuantity) {
-    var wizards = [];
-
-    for (var i = 0; i < wizardsQuantity; i++) {
-      var wizard = window.data.generateWizard(i);
-
-      wizards.push(wizard);
-    }
-
-    return wizards;
-  };
-
-  var wizards = createWizardsArray(WIZARDS_QUANTITY);
-
   var renderWizard = function (wizard) {
     var wizardElement = similarWizardTemplate.cloneNode(true);
 
     wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
-    wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
-    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
+    wizardElement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
+    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.colorEyes;
 
     return wizardElement;
   };
 
-  var renderAllWizards = function (wizardsQuantity) {
+  var onSuccess = function (wizards) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < wizardsQuantity; i++) {
-      fragment.appendChild(renderWizard(wizards[i]));
+    for (var i = 0; i < WIZARDS_QUANTITY; i++) {
+      var wizard = window.utils.getRandomElement(wizards);
+
+      fragment.appendChild(renderWizard(wizard));
     }
 
     similarListElement.appendChild(fragment);
   };
 
-  renderAllWizards(WIZARDS_QUANTITY);
+  var onError = function (errorMessage) {
+    var node = document.createElement('div');
+
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  window.backend.load(onSuccess, onError);
+
+  window.setup = {
+    onError: onError
+  };
 })();
