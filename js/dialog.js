@@ -28,6 +28,8 @@
     }
 
     input.value = randomColor;
+
+    window.similar.onColorChange(randomColor);
   };
 
   var onCoatChangeColor = function () {
@@ -55,7 +57,6 @@
 
   var openPopup = function () {
     setup.classList.remove('hidden');
-    setup.querySelector('.setup-similar').classList.remove('hidden');
 
     document.addEventListener('keydown', onPopupEscPress);
     wizardCoat.addEventListener('click', onCoatChangeColor);
@@ -66,7 +67,6 @@
 
   var closePopup = function () {
     setup.classList.add('hidden');
-    setup.querySelector('.setup-similar').classList.add('hidden');
 
     resetSetupDialog();
 
@@ -80,7 +80,7 @@
   var onFormSubmit = function (evt) {
     evt.preventDefault();
 
-    window.backend.save(new FormData(form), closePopup, window.setup.onError);
+    window.backend.save(new FormData(form), closePopup, window.similar.onError);
     form.reset();
   };
 
