@@ -17,6 +17,7 @@
   var eyesColorInput = form.querySelector('input[name=eyes-color]');
   var wizardFireball = form.querySelector('.setup-fireball-wrap');
   var wizardFireballInput = wizardFireball.querySelector('input');
+  var fileChooser = form.querySelector('.upload input[type=file]');
 
   var changeColorElement = function (color, wizardElement, input) {
     var randomColor = window.utils.getRandomElement(color);
@@ -62,6 +63,7 @@
     wizardCoat.addEventListener('click', onCoatChangeColor);
     wizardEyes.addEventListener('click', onEyesChangeColor);
     wizardFireball.addEventListener('click', onFireballChangeColor);
+    fileChooser.addEventListener('change', window.avatar.onLoad);
     form.addEventListener('submit', onFormSubmit);
   };
 
@@ -74,6 +76,7 @@
     wizardCoat.removeEventListener('click', onCoatChangeColor);
     wizardEyes.removeEventListener('click', onEyesChangeColor);
     wizardFireball.removeEventListener('click', onFireballChangeColor);
+    fileChooser.removeEventListener('change', window.avatar.onLoad);
     form.removeEventListener('submit', onFormSubmit);
   };
 
